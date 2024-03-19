@@ -1,0 +1,13 @@
+- @controller('abc') để làm 1 chức năng gì đó
+- abc trong nháy kép để tạo 1 router mới nếu ko có gì thì là /
+- cứ sau 1 phương thức kiểu @Get() @Post() @Put(), ... thì sẽ là 1 câu lệnh hay chuỗi xử lí tác vụ
+- @Req() gán Req cho req để dùng cho các lệnh kiểu request.headers, request.query,...
+- @Res() tương tự @Req
+- @Get('xyz') thêm router cho đoạn sau: .../abc/xyz
+- @Header( 'tên','giá trị') em chưa hiểu phần giá trị
+- @Query('') tìm kiếm tham số trên url
+- @Params giống query , em chưa hiểu rõ sự khác nhau giữa params vs query
+- async đi đôi với promise, await 1 hành động nào đó và kết thúc = .then .catch
+- Observable dùng với map, filter, reduce, subscribe - em chưa hiểu rõ
+- @Body abc thì nest parse dữ liệu từ body của post hoặc put gán vào biến abc
+- findAll(@Res({ passthrough: true }) res: Response) em chưa hiểu phần {passthrough: true}
