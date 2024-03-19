@@ -11,3 +11,4 @@
 - Observable dùng với map, filter, reduce, subscribe - em chưa hiểu rõ
 - @Body abc thì nest parse dữ liệu từ body của post hoặc put gán vào biến abc
 - findAll(@Res({ passthrough: true }) res: Response) em chưa hiểu phần {passthrough: true}
+- phần typescrip em đọc bên w3school em chưa biết phải ghi gì luôn a
