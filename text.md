@@ -1,4 +1,3 @@
-- @controller('abc') để làm 1 chức năng gì đó
 - abc trong nháy kép để tạo 1 router mới nếu ko có gì thì là /
 - cứ sau 1 phương thức kiểu @Get() @Post() @Put(), ... thì sẽ là 1 câu lệnh hay chuỗi xử lí tác vụ
 - @Req() gán Req cho req để dùng cho các lệnh kiểu request.headers, request.query,...
