@@ -1,5 +1,5 @@
 export class ProductDto{
-    categoryId? : number;
     productName? : string;
+    desciption? : string;
     price?: number;
 };

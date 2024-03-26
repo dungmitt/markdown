@@ -1,40 +1,40 @@
 import { Delete, Get, Injectable, Post, Put } from "@nestjs/common";
+import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { ProductDto } from "src/dto/product.dto";
+import { ProductEntity } from "src/entities/produc.entity";
 import { Product } from "src/models/product.models";
+import { Equal, Like, MoreThan, Repository } from 'typeorm';
 @Injectable()
 export class ProductService {
-    private products:Product[] = [
-        {id: 1, categoryId: 2, price: 100, productName: "product 1"},
-        {id: 2, categoryId: 1, price: 200, productName: "product 2"},
-    ]
-    getProducts(): Product[]{
-        
-        return this.products;
+    // private products:Product[] = [
+    //     {id: 1, categoryId: 2, price: 100, productName: "product 1"},
+    //     {id: 2, categoryId: 1, price: 200, productName: "product 2"},
+    // ]
+    constructor(
+        @InjectRepository(ProductEntity)
+        private readonly productRepository: Repository<ProductEntity>,
+    ){}
+    async getProducts(): Promise<ProductEntity[]> { // Sử dụng async và Promise<ProductEntity[]>
+        return await this.productRepository.find(); // Sử dụng await để chờ kết quả trả về từ repository
     }
-    createProduct(productDto:ProductDto) : Product {
-        const product : Product = {
-            id: Math.random(),
-            ...productDto
+    async createProduct(productDto:ProductDto) : Promise<ProductEntity>{
+        const createdProduct = this.productRepository.create(productDto);
+        return await this.productRepository.save(createdProduct)
+    }
+    async detailProduct(id: number): Promise<ProductEntity> {
+        return await this.productRepository.findOne({where : {id}}); 
+    }
+    async updateProduct(productDto: ProductDto, id: number): Promise<ProductEntity | undefined> {
+        const existingProduct = await this.productRepository.findOne({where : {id}});
+        if (!existingProduct) {
+            throw new Error('Product not found');
         }
-        this.products.push(product);
-        return productDto;
+
+        const updatedProduct = Object.assign(existingProduct, productDto);
+        return await this.productRepository.save(updatedProduct);
     }
-    detailProduct(id:number) : Product{
-        return this.products.find(p => p.id === Number(id));
-    }
-    updatelProduct(productDto : ProductDto, id : number) : Product{
-        const index = this.products.findIndex(p => p.id === Number(id));
-        this.products[index].categoryId = productDto.categoryId;
-        this.products[index].productName = productDto.productName;
-        this.products[index].price = productDto.price;
-        return this.products[index];
-    }
-    deleteProduct(id : number) : boolean{
-        const index = this.products.findIndex(p => p.id === Number(id));
-        if(index != -1){
-            this.products.slice(index,1);
-            return true
-        }
-        return false;
+    async deleteProduct(id : number) : Promise<boolean>{
+        const result = await this.productRepository.delete(id);
+        return result.affected > 0;
     }
 }

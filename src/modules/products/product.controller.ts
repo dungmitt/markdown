@@ -7,44 +7,51 @@ import { ProductDto } from "src/dto/product.dto";
 
 @Controller('products')
 export class ProductController{
-    constructor(private readonly productsService: ProductService){}
+    constructor(private readonly productsService: ProductService) {}
+
     @Get()
-    getProducts(): ResponseData<Product[]>{
+    async getProducts(): Promise<ResponseData<Product[]>> {
         try {
-            return new ResponseData<Product[]>(this.productsService.getProducts(), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            const products = await this.productsService.getProducts();
+            return new ResponseData<Product[]>(products, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
             return new ResponseData<Product[]>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
-        
     }
     @Post()
-    createProduct(@Body() productDto: ProductDto) : ResponseData<ProductDto>{
+    async createProduct(@Body() productDto: ProductDto): Promise<ResponseData<Product>> {
         try {
-            return new ResponseData<Product>(this.productsService.createProduct(productDto), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            const createdProduct = await this.productsService.createProduct(productDto);
+            return new ResponseData<Product>(createdProduct, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
             return new ResponseData<Product>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
     @Get(':id')
-    detailProduct(@Param('id') id : number) : ResponseData<Product>{
+    async detailProduct(@Param('id') id: number): Promise<ResponseData<Product>> {
         try {
-            return new ResponseData<Product>(this.productsService.detailProduct(id), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            const product = await this.productsService.detailProduct(id);
+            return new ResponseData<Product>(product, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
             return new ResponseData<Product>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
+
     @Put('/:id')
-    updatelProduct(@Body() productDto : ProductDto, @Param('id') id : number) : ResponseData<Product>{
+    async updateProduct(@Body() productDto: ProductDto, @Param('id') id: number): Promise<ResponseData<Product>> {
         try {
-            return new ResponseData<Product>(this.productsService.updatelProduct(productDto,id), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            const updatedProduct = await this.productsService.updateProduct(productDto, id);
+            return new ResponseData<Product>(updatedProduct, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
             return new ResponseData<Product>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
+
     @Delete('/:id')
-    removeProduct(@Param('id') id: number) : ResponseData<boolean>{
+    async removeProduct(@Param('id') id: number): Promise<ResponseData<boolean>> {
         try {
-            return new ResponseData<boolean>(this.productsService.deleteProduct(id), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            const isDeleted = await this.productsService.deleteProduct(id);
+            return new ResponseData<boolean>(isDeleted, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
             return new ResponseData<boolean>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
